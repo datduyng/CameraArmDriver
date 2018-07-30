@@ -12,7 +12,7 @@ void CameraArmDriver::cameraArmBegin(int basePin, int shoulderPin){
 
   _base.attach(_basePin,BASE_MIN_PW,BASE_MAX_PW);
   _shoulder.attach(_shoulderPin,SHOULDER_MIN_PW,SHOULDER_MAX_PW);
-  Serial.begin(115200);
+  // Serial.begin(115200);
 }
 
 void CameraArmDriver::end(){
@@ -23,27 +23,30 @@ void CameraArmDriver::end(){
 void CameraArmDriver::turnBase(char pos ){
   setCameraFacePos(pos);
   if(pos == 'r'){
-	  Serial.println("Base Right");
+	  // Serial.println("Base Right");
       _base.write(CW_BASE);
+      setCameraFacePos('r');  
   }else if(pos == 'c'){
-	  Serial.println("Base center");
+	  // Serial.println("Base center");
       _base.write(CENTER_BASE);
+      setCameraFacePos('c');
   }else if(pos == 'l'){
-	  Serial.println("Base left");
+	  // Serial.println("Base left");
       _base.write(CCW_BASE);
+      setCameraFacePos('l');
   }
 }
 
 void CameraArmDriver::turnShoulder(char pos ){
   if(pos == 'r'){
-	  Serial.println("shoulder Right");
+	  // Serial.println("shoulder Right");
       _shoulder.write(CW_SHOULDER);
   }else if(pos == 'c'){
-	  Serial.println("shoulder center");
+	  // Serial.println("shoulder center");
       _shoulder.write(CENTER_SHOULDER);
   }else if(pos == 'l'){
       _shoulder.write(CCW_SHOULDER);
-	  Serial.println("shoulder left");
+	  // Serial.println("shoulder left");
   }
 }
 
@@ -51,16 +54,16 @@ void CameraArmDriver::rest(){
   // make sure the shoulder is 90 to avoid colision
   turnShoulder('c');
   delay(700);
-  _base.write(CENTER_BASE+30);
-  turnShoulder('r');
+  _base.write(CENTER_BASE);
+  turnShoulder('l');
 }
 
 void CameraArmDriver::turn(char pos){
   turnShoulder('c');
   turnBase(pos);
-  setCameraFacePos(pos);
 }
 int CameraArmDriver::getCameraFacePosition(){
+  // Serial.print("cameraFacePos");Serial.println(cameraFacePos);
   return cameraFacePos; 
 }
 void CameraArmDriver::setCameraFacePos(char pos){
@@ -69,7 +72,7 @@ void CameraArmDriver::setCameraFacePos(char pos){
   }else if(pos == 'l'){
     cameraFacePos = -1;
   }else if(pos == 'c'){
-  cameraFacePos = 0;
+    cameraFacePos = 0;
   }
 }
 
